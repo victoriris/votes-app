@@ -1,19 +1,14 @@
-import { ApolloServer, ApolloServerExpressConfig } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import http from "http";
+import { schema } from "./schema";
 
-type ApolloConfig = ApolloServerExpressConfig;
-
-async function startApolloServer(
-	typeDefs: ApolloConfig["typeDefs"],
-	resolvers: ApolloConfig["resolvers"]
-) {
+async function startApolloServer() {
 	const app = express();
 	const httpServer = http.createServer(app);
 	const server = new ApolloServer({
-		typeDefs,
-		resolvers,
+		schema,
 		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 	});
 	await server.start();
@@ -26,4 +21,4 @@ async function startApolloServer(
 }
 
 // Start server
-startApolloServer(undefined, undefined)
+startApolloServer()
