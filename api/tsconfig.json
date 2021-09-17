@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		/* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+		/* Projects */
+		"outDir": "dist",
+		"rootDir": "src",
+
+		/* Language and Environment */
+		"target": "ESNext",
+		"lib": ["ESNext"],
+
+		/* Modules */
+		"module": "CommonJS",
+
+		/* Emit */
+		"removeComments": true,
+
+		/* Interop Constraints */
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+
+		/* Type Checking */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+
+		/* Completeness */
+		"skipLibCheck": true
+	},
+	
+	"exclude": ["node_modules"]
+}
