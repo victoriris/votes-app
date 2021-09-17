@@ -3,13 +3,19 @@ import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import http from "http";
 import { schema } from "./schema";
+import {
+	ApolloServerPluginLandingPageGraphQLPlayground
+  } from "apollo-server-core";
 
 async function startApolloServer() {
 	const app = express();
 	const httpServer = http.createServer(app);
 	const server = new ApolloServer({
 		schema,
-		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+		plugins: [
+			ApolloServerPluginDrainHttpServer({ httpServer }),
+			ApolloServerPluginLandingPageGraphQLPlayground()
+		],
 	});
 	await server.start();
 	server.applyMiddleware({ app });
