@@ -2,7 +2,6 @@ import { objectType } from "nexus";
 import { Item } from "./Item";
 import { User } from "./User";
 
-
 export const Vote = objectType({
 	name: "Vote",
 	definition(t) {
