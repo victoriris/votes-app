@@ -2,6 +2,10 @@
 ### Do not make changes to this file directly
 
 
+input AddBoardItemInput {
+  content: String!
+}
+
 type Board {
   description: String!
   id: ID!
@@ -13,10 +17,22 @@ input BoardWhereUniqueInput {
   id: ID!
 }
 
+input CreateBoardInput {
+  description: String!
+  name: String!
+}
+
 type Item {
   content: String!
   id: ID!
   votes: [Vote!]!
+}
+
+type Mutation {
+  addBoardItem(input: AddBoardItemInput!, where: BoardWhereUniqueInput!): Item!
+  createBoard(input: CreateBoardInput!): Board!
+  removeBoardItem(where: BoardWhereUniqueInput!): Item!
+  voteItem(input: VoteItemInput!): Vote!
 }
 
 type Query {
@@ -37,4 +53,8 @@ type Vote {
   itemId: ID!
   user: User
   userId: ID!
+}
+
+input VoteItemInput {
+  itemId: ID!
 }

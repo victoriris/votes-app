@@ -1,29 +1,68 @@
-import { mutationField, nullable } from "nexus";
+import { mutationField, nonNull } from "nexus";
+import { BoardWhereUniqueInput, CreateBoardInput, AddBoardItemInput, VoteItemInput } from "../inputs";
 
 export const createBoard = mutationField("createBoard", {
-    type: nullable("Board"),
-    resolve: async(root, args, ctx) => {
-        return null
-    }
-})
+	type: nonNull("Board"),
+	args: {
+		input: nonNull(CreateBoardInput),
+	},
+	resolve: async (_, args, ctx) => {
+		return ctx.prisma.board.create({
+			data: args.input,
+		});
+	},
+});
 
 export const addBoardItem = mutationField("addBoardItem", {
-    type: nullable("Item"),
-    resolve: async(root, args, ctx) => {
-        return null
-    }
-})
+	type: nonNull("Item"),
+	args: {
+		input: nonNull(AddBoardItemInput),
+		where: nonNull(BoardWhereUniqueInput)
+	},
+	resolve: async (_, args, ctx) => {
+		return ctx.prisma.item.create({
+			data: {
+				...args.input,
+				boardId: args.where.id
+			},
+		});
+	},
+});
 
 export const removeBoardItem = mutationField("removeBoardItem", {
-    type: nullable("Item"),
-    resolve: async(root, args, ctx) => {
-        return null
-    }
-})
+	type: nonNull("Item"),
+	args: {
+		where: nonNull(BoardWhereUniqueInput),
+	},
+	resolve: async (_, args, ctx) => {
+		return ctx.prisma.item.delete({
+			where: args.where,
+		});
+	},
+});
 
 export const voteItem = mutationField("voteItem", {
-    type: nullable("Vote"),
-    resolve: async(root, args, ctx) => {
-        return null
-    }
-})
+	type: nonNull("Vote"),
+	args: {
+		input: nonNull(VoteItemInput),
+	},
+	resolve: async (_, args, ctx) => {
+		return ctx.prisma.vote.create({
+			data: {
+                item: {
+                    connect: {
+                        id: args.input.itemId
+                    }
+                },
+                user: {
+                    create: {
+                        firstName: "test",
+                        lastName: "user",
+                        email: new Date().toString(),
+                        password: "",
+                    }
+                }
+            }
+		});
+	},
+});

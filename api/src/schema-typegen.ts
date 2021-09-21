@@ -14,8 +14,18 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AddBoardItemInput: { // input type
+    content: string; // String!
+  }
   BoardWhereUniqueInput: { // input type
     id: string; // ID!
+  }
+  CreateBoardInput: { // input type
+    description: string; // String!
+    name: string; // String!
+  }
+  VoteItemInput: { // input type
+    itemId: string; // ID!
   }
 }
 
@@ -40,6 +50,7 @@ export interface NexusGenObjects {
     content: string; // String!
     id: string; // ID!
   }
+  Mutation: {};
   Query: {};
   User: { // root type
     email: string; // String!
@@ -76,6 +87,12 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
     votes: NexusGenRootTypes['Vote'][]; // [Vote!]!
   }
+  Mutation: { // field return type
+    addBoardItem: NexusGenRootTypes['Item']; // Item!
+    createBoard: NexusGenRootTypes['Board']; // Board!
+    removeBoardItem: NexusGenRootTypes['Item']; // Item!
+    voteItem: NexusGenRootTypes['Vote']; // Vote!
+  }
   Query: { // field return type
     board: NexusGenRootTypes['Board']; // Board!
     boards: NexusGenRootTypes['Board'][]; // [Board!]!
@@ -107,6 +124,12 @@ export interface NexusGenFieldTypeNames {
     id: 'ID'
     votes: 'Vote'
   }
+  Mutation: { // field return type name
+    addBoardItem: 'Item'
+    createBoard: 'Board'
+    removeBoardItem: 'Item'
+    voteItem: 'Vote'
+  }
   Query: { // field return type name
     board: 'Board'
     boards: 'Board'
@@ -127,6 +150,21 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    addBoardItem: { // args
+      input: NexusGenInputs['AddBoardItemInput']; // AddBoardItemInput!
+      where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
+    }
+    createBoard: { // args
+      input: NexusGenInputs['CreateBoardInput']; // CreateBoardInput!
+    }
+    removeBoardItem: { // args
+      where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
+    }
+    voteItem: { // args
+      input: NexusGenInputs['VoteItemInput']; // VoteItemInput!
+    }
+  }
   Query: {
     board: { // args
       where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
