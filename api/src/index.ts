@@ -6,12 +6,14 @@ import { schema } from "./schema";
 import {
 	ApolloServerPluginLandingPageGraphQLPlayground
   } from "apollo-server-core";
+import { createContext } from "./context";
 
 async function startApolloServer() {
 	const app = express();
 	const httpServer = http.createServer(app);
 	const server = new ApolloServer({
 		schema,
+		context: createContext,
 		plugins: [
 			ApolloServerPluginDrainHttpServer({ httpServer }),
 			ApolloServerPluginLandingPageGraphQLPlayground()
