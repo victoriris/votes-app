@@ -1,15 +1,22 @@
-import { list, queryField, nonNull, nullable } from "nexus";
+import { list, nonNull, queryField } from "nexus";
+import { BoardWhereUniqueInput } from "../inputs";
 
 export const boards = queryField("boards", {
-    type: list(nonNull("Board")),
-    resolve: async(root, args, ctx) => {
-        return []
+    type: nonNull(list(nonNull("Board"))),
+    resolve: async(_root, _args, ctx) => {
+        return ctx.prisma.board.findMany()
     }
-})
+});
 
 export const board = queryField("board", {
-    type: nullable("Board"),
-    resolve: async(root, args, ctx) => {
-        return null
+    type: nonNull("Board"),
+    args: {
+        where: nonNull(BoardWhereUniqueInput)
+    },
+    resolve: async(_root, args, ctx) => {
+        return ctx.prisma.board.findFirst({
+            where: args.where,
+            rejectOnNotFound: true,
+        })
     }
-})
+});

@@ -9,6 +9,10 @@ type Board {
   name: String!
 }
 
+input BoardWhereUniqueInput {
+  id: ID!
+}
+
 type Item {
   content: String!
   id: ID!
@@ -16,7 +20,8 @@ type Item {
 }
 
 type Query {
-  ok: Boolean!
+  board(where: BoardWhereUniqueInput!): Board!
+  boards: [Board!]!
 }
 
 type User {
@@ -28,8 +33,8 @@ type User {
 }
 
 type Vote {
-  item: Item!
+  item: Item
   itemId: ID!
-  user: User!
+  user: User
   userId: ID!
 }

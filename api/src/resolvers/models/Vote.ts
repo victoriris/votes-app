@@ -7,11 +7,31 @@ export const Vote = objectType({
 	definition(t) {
 		t.nonNull.id("itemId");
 		t.nonNull.id("userId");
-		t.nonNull.field("user", {
+		t.nullable.field("user", {
 			type: User,
+			resolve: async(root, _, ctx) => {
+				return ctx.prisma.vote.findUnique({
+					where: {
+						itemId_userId: {
+							itemId: root.itemId,
+							userId: root.userId
+						}
+					}
+				}).user()
+			}
 		});
-		t.nonNull.field("item", {
+		t.nullable.field("item", {
 			type: Item,
+			resolve: async(root, _, ctx) => {
+				return ctx.prisma.vote.findUnique({
+					where: {
+						itemId_userId: {
+							itemId: root.itemId,
+							userId: root.userId
+						}
+					}
+				}).item()
+			}
 		});
 	},
 });

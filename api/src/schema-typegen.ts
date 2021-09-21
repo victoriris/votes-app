@@ -14,6 +14,9 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  BoardWhereUniqueInput: { // input type
+    id: string; // ID!
+  }
 }
 
 export interface NexusGenEnums {
@@ -31,13 +34,11 @@ export interface NexusGenObjects {
   Board: { // root type
     description: string; // String!
     id: string; // ID!
-    items: NexusGenRootTypes['Item'][]; // [Item!]!
     name: string; // String!
   }
   Item: { // root type
     content: string; // String!
     id: string; // ID!
-    votes: NexusGenRootTypes['Vote'][]; // [Vote!]!
   }
   Query: {};
   User: { // root type
@@ -48,9 +49,7 @@ export interface NexusGenObjects {
     password: string; // String!
   }
   Vote: { // root type
-    item: NexusGenRootTypes['Item']; // Item!
     itemId: string; // ID!
-    user: NexusGenRootTypes['User']; // User!
     userId: string; // ID!
   }
 }
@@ -78,7 +77,8 @@ export interface NexusGenFieldTypes {
     votes: NexusGenRootTypes['Vote'][]; // [Vote!]!
   }
   Query: { // field return type
-    ok: boolean; // Boolean!
+    board: NexusGenRootTypes['Board']; // Board!
+    boards: NexusGenRootTypes['Board'][]; // [Board!]!
   }
   User: { // field return type
     email: string; // String!
@@ -88,9 +88,9 @@ export interface NexusGenFieldTypes {
     password: string; // String!
   }
   Vote: { // field return type
-    item: NexusGenRootTypes['Item']; // Item!
+    item: NexusGenRootTypes['Item'] | null; // Item
     itemId: string; // ID!
-    user: NexusGenRootTypes['User']; // User!
+    user: NexusGenRootTypes['User'] | null; // User
     userId: string; // ID!
   }
 }
@@ -108,7 +108,8 @@ export interface NexusGenFieldTypeNames {
     votes: 'Vote'
   }
   Query: { // field return type name
-    ok: 'Boolean'
+    board: 'Board'
+    boards: 'Board'
   }
   User: { // field return type name
     email: 'String'
@@ -126,6 +127,11 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Query: {
+    board: { // args
+      where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {
@@ -136,7 +142,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 
