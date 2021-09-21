@@ -18,10 +18,10 @@ model Board {
 }
 
 model Item {
-  id      String  @id @default(cuid())
+  id      String @id @default(cuid())
   content String
-  boardId String?
-  board   Board?  @relation(fields: [boardId], references: [id])
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
   votes   Vote[]
 }
 
@@ -36,9 +36,9 @@ model User {
 
 model Vote {
   itemId String
-  item   Item   @relation(fields: [itemId], references: [id])
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([itemId, userId])
 }
