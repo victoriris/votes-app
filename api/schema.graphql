@@ -2,10 +2,6 @@
 ### Do not make changes to this file directly
 
 
-input AddBoardItemInput {
-  content: String!
-}
-
 type Board {
   description: String!
   id: ID!
@@ -22,39 +18,41 @@ input CreateBoardInput {
   name: String!
 }
 
+input CreateBoardItemInput {
+  content: String!
+}
+
 type Item {
   content: String!
   id: ID!
   votes: [Vote!]!
 }
 
+input ItemWhereUniqueInput {
+  id: ID!
+}
+
 type Mutation {
-  addBoardItem(input: AddBoardItemInput!, where: BoardWhereUniqueInput!): Item!
-  createBoard(input: CreateBoardInput!): Board!
-  removeBoardItem(where: BoardWhereUniqueInput!): Item!
-  voteItem(input: VoteItemInput!): Vote!
+  createBoard(input: CreateBoardInput!): Board
+  createBoardItem(input: CreateBoardItemInput!, where: BoardWhereUniqueInput!): Item
+  removeBoardItem(where: ItemWhereUniqueInput!): Item
+  voteItem(where: ItemWhereUniqueInput!): Vote
 }
 
 type Query {
-  board(where: BoardWhereUniqueInput!): Board!
+  board(where: BoardWhereUniqueInput!): Board
   boards: [Board!]!
 }
 
 type User {
-  email: String!
-  firstName: String!
+  firstname: String!
   id: ID!
-  lastName: String!
-  password: String!
+  lastname: String!
 }
 
 type Vote {
-  item: Item
+  item: Item!
   itemId: ID!
-  user: User
+  user: User!
   userId: ID!
-}
-
-input VoteItemInput {
-  itemId: ID!
 }

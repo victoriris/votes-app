@@ -8,7 +8,7 @@
 
 		/* Language and Environment */
 		"target": "ESNext",
-		"lib": ["ESNext"],
+		"lib": ["ESNext", "DOM"],
 
 		/* Modules */
 		"module": "CommonJS",

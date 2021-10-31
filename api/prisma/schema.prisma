@@ -10,6 +10,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id        String @id @default(cuid())
+  firstname String
+  lastname  String
+  email     String @unique
+  password  String
+  votes     Vote[]
+}
+
 model Board {
   id          String @id @default(cuid())
   name        String
@@ -25,20 +34,11 @@ model Item {
   votes   Vote[]
 }
 
-model User {
-  id        String @id @default(cuid())
-  email     String @unique
-  firstName String
-  lastName  String
-  password  String
-  votes     Vote[]
-}
-
 model Vote {
-  itemId String
-  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   userId String
+  itemId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-  @@id([itemId, userId])
+  @@id([userId, itemId])
 }

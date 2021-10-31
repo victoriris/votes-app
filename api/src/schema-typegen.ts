@@ -14,9 +14,6 @@ declare global {
 }
 
 export interface NexusGenInputs {
-  AddBoardItemInput: { // input type
-    content: string; // String!
-  }
   BoardWhereUniqueInput: { // input type
     id: string; // ID!
   }
@@ -24,8 +21,11 @@ export interface NexusGenInputs {
     description: string; // String!
     name: string; // String!
   }
-  VoteItemInput: { // input type
-    itemId: string; // ID!
+  CreateBoardItemInput: { // input type
+    content: string; // String!
+  }
+  ItemWhereUniqueInput: { // input type
+    id: string; // ID!
   }
 }
 
@@ -53,11 +53,9 @@ export interface NexusGenObjects {
   Mutation: {};
   Query: {};
   User: { // root type
-    email: string; // String!
-    firstName: string; // String!
+    firstname: string; // String!
     id: string; // ID!
-    lastName: string; // String!
-    password: string; // String!
+    lastname: string; // String!
   }
   Vote: { // root type
     itemId: string; // ID!
@@ -88,26 +86,24 @@ export interface NexusGenFieldTypes {
     votes: NexusGenRootTypes['Vote'][]; // [Vote!]!
   }
   Mutation: { // field return type
-    addBoardItem: NexusGenRootTypes['Item']; // Item!
-    createBoard: NexusGenRootTypes['Board']; // Board!
-    removeBoardItem: NexusGenRootTypes['Item']; // Item!
-    voteItem: NexusGenRootTypes['Vote']; // Vote!
+    createBoard: NexusGenRootTypes['Board'] | null; // Board
+    createBoardItem: NexusGenRootTypes['Item'] | null; // Item
+    removeBoardItem: NexusGenRootTypes['Item'] | null; // Item
+    voteItem: NexusGenRootTypes['Vote'] | null; // Vote
   }
   Query: { // field return type
-    board: NexusGenRootTypes['Board']; // Board!
+    board: NexusGenRootTypes['Board'] | null; // Board
     boards: NexusGenRootTypes['Board'][]; // [Board!]!
   }
   User: { // field return type
-    email: string; // String!
-    firstName: string; // String!
+    firstname: string; // String!
     id: string; // ID!
-    lastName: string; // String!
-    password: string; // String!
+    lastname: string; // String!
   }
   Vote: { // field return type
-    item: NexusGenRootTypes['Item'] | null; // Item
+    item: NexusGenRootTypes['Item']; // Item!
     itemId: string; // ID!
-    user: NexusGenRootTypes['User'] | null; // User
+    user: NexusGenRootTypes['User']; // User!
     userId: string; // ID!
   }
 }
@@ -125,8 +121,8 @@ export interface NexusGenFieldTypeNames {
     votes: 'Vote'
   }
   Mutation: { // field return type name
-    addBoardItem: 'Item'
     createBoard: 'Board'
+    createBoardItem: 'Item'
     removeBoardItem: 'Item'
     voteItem: 'Vote'
   }
@@ -135,11 +131,9 @@ export interface NexusGenFieldTypeNames {
     boards: 'Board'
   }
   User: { // field return type name
-    email: 'String'
-    firstName: 'String'
+    firstname: 'String'
     id: 'ID'
-    lastName: 'String'
-    password: 'String'
+    lastname: 'String'
   }
   Vote: { // field return type name
     item: 'Item'
@@ -151,18 +145,18 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
-    addBoardItem: { // args
-      input: NexusGenInputs['AddBoardItemInput']; // AddBoardItemInput!
-      where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
-    }
     createBoard: { // args
       input: NexusGenInputs['CreateBoardInput']; // CreateBoardInput!
     }
-    removeBoardItem: { // args
+    createBoardItem: { // args
+      input: NexusGenInputs['CreateBoardItemInput']; // CreateBoardItemInput!
       where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
     }
+    removeBoardItem: { // args
+      where: NexusGenInputs['ItemWhereUniqueInput']; // ItemWhereUniqueInput!
+    }
     voteItem: { // args
-      input: NexusGenInputs['VoteItemInput']; // VoteItemInput!
+      where: NexusGenInputs['ItemWhereUniqueInput']; // ItemWhereUniqueInput!
     }
   }
   Query: {

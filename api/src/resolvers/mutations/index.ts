@@ -1,68 +1,70 @@
-import { mutationField, nonNull } from "nexus";
-import { BoardWhereUniqueInput, CreateBoardInput, AddBoardItemInput, VoteItemInput } from "../inputs";
+import { mutationField, nonNull, nullable } from "nexus";
+import { Board, BoardWhereUniqueInput, CreateBoardInput, CreateBoardItemInput, Item, ItemWhereUniqueInput, Vote } from "..";
 
 export const createBoard = mutationField("createBoard", {
-	type: nonNull("Board"),
-	args: {
-		input: nonNull(CreateBoardInput),
-	},
-	resolve: async (_, args, ctx) => {
-		return ctx.prisma.board.create({
-			data: args.input,
-		});
-	},
-});
+    type: nullable(Board),
+    args: {
+        input: nonNull(CreateBoardInput)
+    },
+    resolve: async (_root, args, ctx) => {
+        return ctx.prisma.board.create({
+            data: {
+                ...args.input
+            }
+        })
+    }
+})
 
-export const addBoardItem = mutationField("addBoardItem", {
-	type: nonNull("Item"),
-	args: {
-		input: nonNull(AddBoardItemInput),
-		where: nonNull(BoardWhereUniqueInput)
-	},
-	resolve: async (_, args, ctx) => {
-		return ctx.prisma.item.create({
-			data: {
-				...args.input,
-				boardId: args.where.id
-			},
-		});
-	},
-});
+export const createBoardItem = mutationField("createBoardItem", {
+    type: nullable(Item),
+    args: {
+        input: nonNull(CreateBoardItemInput),
+        where: nonNull(BoardWhereUniqueInput)
+    },
+    resolve: async (_root, args, ctx) => {
+        return ctx.prisma.item.create({
+            data: {
+                ...args.input,
+                boardId: args.where.id
+            }
+        })
+    }
+})
 
 export const removeBoardItem = mutationField("removeBoardItem", {
-	type: nonNull("Item"),
-	args: {
-		where: nonNull(BoardWhereUniqueInput),
-	},
-	resolve: async (_, args, ctx) => {
-		return ctx.prisma.item.delete({
-			where: args.where,
-		});
-	},
-});
+    type: nullable(Item),
+    args: {
+        where: nonNull(ItemWhereUniqueInput)
+    },
+    resolve: async (_root, args, ctx) => {
+        return ctx.prisma.item.delete({
+            where: args.where
+        })
+    }
+})
 
 export const voteItem = mutationField("voteItem", {
-	type: nonNull("Vote"),
-	args: {
-		input: nonNull(VoteItemInput),
-	},
-	resolve: async (_, args, ctx) => {
-		return ctx.prisma.vote.create({
-			data: {
-                item: {
-                    connect: {
-                        id: args.input.itemId
-                    }
-                },
+    type: nullable(Vote),
+    args: {
+        where: nonNull(ItemWhereUniqueInput)
+    },
+    resolve: async (_root, args, ctx) => {
+        return ctx.prisma.vote.create({
+            data: {
                 user: {
                     create: {
-                        firstName: "test",
-                        lastName: "user",
+                        firstname: "erlgkjherghergiu",
+                        lastname: "kdhjgiergubue",
                         email: new Date().toString(),
-                        password: "",
+                        password: "gegehg",
                     }
-                }
+                },
+                item: {
+                    connect: {
+                        id: args.where.id
+                    }
+                },
             }
-		});
-	},
-});
+        })
+    }
+})
