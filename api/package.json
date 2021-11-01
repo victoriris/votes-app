@@ -2,6 +2,9 @@
   "name": "votes-api",
   "version": "1.0.0",
   "main": "index.js",
+  "author": {
+    "name": "Victor Iris"
+  },
   "license": "MIT",
   "scripts": {
     "postinstall": "npm -s run generate",
