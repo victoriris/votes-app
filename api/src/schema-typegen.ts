@@ -107,6 +107,7 @@ export interface NexusGenFieldTypes {
     createBoard: NexusGenRootTypes['Board'] | null; // Board
     createBoardItem: NexusGenRootTypes['Item'] | null; // Item
     removeBoardItem: NexusGenRootTypes['Item'] | null; // Item
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     voteItem: NexusGenRootTypes['Vote'] | null; // Vote
   }
   Query: { // field return type
@@ -146,6 +147,7 @@ export interface NexusGenFieldTypeNames {
     createBoard: 'Board'
     createBoardItem: 'Item'
     removeBoardItem: 'Item'
+    signup: 'AuthPayload'
     voteItem: 'Vote'
   }
   Query: { // field return type name
@@ -176,6 +178,9 @@ export interface NexusGenArgTypes {
     }
     removeBoardItem: { // args
       where: NexusGenInputs['ItemWhereUniqueInput']; // ItemWhereUniqueInput!
+    }
+    signup: { // args
+      input: NexusGenInputs['SignupInput']; // SignupInput!
     }
     voteItem: { // args
       where: NexusGenInputs['ItemWhereUniqueInput']; // ItemWhereUniqueInput!

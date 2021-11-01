@@ -1,5 +1,8 @@
+import bcrypt from "bcryptjs";
 import { mutationField, nonNull, nullable } from "nexus";
-import { Board, BoardWhereUniqueInput, CreateBoardInput, CreateBoardItemInput, Item, ItemWhereUniqueInput, Vote } from "..";
+import { Board, BoardWhereUniqueInput, CreateBoardInput, CreateBoardItemInput, Item, ItemWhereUniqueInput, SignupInput, Vote } from "..";
+import { getTokens } from "../../utils/auth";
+import { AuthPayload } from "../payloads";
 
 export const createBoard = mutationField("createBoard", {
     type: nullable(Board),
@@ -66,5 +69,29 @@ export const voteItem = mutationField("voteItem", {
                 },
             }
         })
+    }
+})
+
+export const signup = mutationField("signup", {
+    type: nonNull(AuthPayload),
+    args: {
+        input: nonNull(SignupInput)
+    },
+    resolve: async (_root, args, ctx) => {
+        
+        const user = await ctx.prisma.user.create({
+            data: {
+                ...args.input,
+                email: args.input.email.toLowerCase(),
+                password: await bcrypt.hash(args.input.password, 10)
+            }
+        })
+
+        const { accessToken } = await getTokens({ userId: user.id }, ctx)
+
+        return {
+            user,
+            accessToken
+        }
     }
 })
