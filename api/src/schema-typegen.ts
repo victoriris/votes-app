@@ -27,6 +27,16 @@ export interface NexusGenInputs {
   ItemWhereUniqueInput: { // input type
     id: string; // ID!
   }
+  LoginInput: { // input type
+    email: string; // String!
+    password: string; // String!
+  }
+  SignupInput: { // input type
+    email: string; // String!
+    firstname: string; // String!
+    lastname: string; // String!
+    password: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -41,6 +51,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    accessToken: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Board: { // root type
     description: string; // String!
     id: string; // ID!
@@ -74,6 +88,10 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    accessToken: string; // String!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Board: { // field return type
     description: string; // String!
     id: string; // ID!
@@ -109,6 +127,10 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    accessToken: 'String'
+    user: 'User'
+  }
   Board: { // field return type name
     description: 'String'
     id: 'ID'

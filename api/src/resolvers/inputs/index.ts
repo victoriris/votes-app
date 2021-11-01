@@ -28,3 +28,21 @@ export const CreateBoardInput = inputObjectType({
 		t.nonNull.string("description");
 	},
 });
+
+export const SignupInput = inputObjectType({
+	name: "SignupInput",
+	definition(t) {
+		t.nonNull.string("firstname");
+		t.nonNull.string("lastname");
+		t.nonNull.string("email");
+		t.nonNull.string("password");
+	},
+})
+
+export const LoginInput = inputObjectType({
+	name: "LoginInput",
+	definition(t) {
+		t.nonNull.string("email");
+		t.nonNull.string("password");
+	},
+})
