@@ -107,6 +107,7 @@ export interface NexusGenFieldTypes {
     createBoard: NexusGenRootTypes['Board'] | null; // Board
     createBoardItem: NexusGenRootTypes['Item'] | null; // Item
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    logout: NexusGenRootTypes['User']; // User!
     refreshAuth: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     removeBoardItem: NexusGenRootTypes['Item'] | null; // Item
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
@@ -149,6 +150,7 @@ export interface NexusGenFieldTypeNames {
     createBoard: 'Board'
     createBoardItem: 'Item'
     login: 'AuthPayload'
+    logout: 'User'
     refreshAuth: 'AuthPayload'
     removeBoardItem: 'Item'
     signup: 'AuthPayload'

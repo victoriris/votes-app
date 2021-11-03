@@ -1,6 +1,5 @@
 import { UserInputError } from "apollo-server-errors";
 import bcrypt from "bcryptjs";
-import { verify } from "jsonwebtoken";
 import { mutationField, nonNull, nullable } from "nexus";
 import {
 	Board,
@@ -10,11 +9,9 @@ import {
 	Item,
 	ItemWhereUniqueInput,
 	LoginInput,
-	SignupInput,
-	Vote,
+	SignupInput, User, Vote
 } from "..";
-import constants from "../../constants";
-import { createTokens, JwtPayload } from "../../utils/auth";
+import { createTokens, getRefreshCookie, removeRefreshCookie } from "../../utils/auth";
 import { AuthPayload } from "../payloads";
 
 export const createBoard = mutationField("createBoard", {
@@ -138,18 +135,14 @@ export const login = mutationField("login", {
 export const refreshAuth = mutationField("refreshAuth", {
 	type: nonNull(AuthPayload),
 	resolve: async (_root, _args, ctx) => {
-		const refreshToken = ctx.request.cookies["refresh"];
-		if (!refreshToken) throw new Error("Invalid cookie");
 
-		const jwtContent = verify(
-			refreshToken,
-			constants.JWT_REFRESH_SECRET
-		) as JwtPayload;
+		const refreshCookie = getRefreshCookie(ctx)
+		if (!refreshCookie) throw new Error("Invalid cookie");
 
 		const user = await ctx.prisma.user.findFirst({
 			where: {
-				id: jwtContent.userId
-			},
+				id: refreshCookie.userId,
+			}
 		})
 		if (!user) throw new UserInputError("Invalid user");
 
@@ -162,5 +155,23 @@ export const refreshAuth = mutationField("refreshAuth", {
 			user: user,
 			accessToken,
 		};
+	},
+});
+
+export const logout = mutationField("logout", {
+	type: nonNull(User),
+	resolve: async (_root, _args, ctx) => {
+
+		const refreshCookie = getRefreshCookie(ctx)
+		if (!refreshCookie) throw new Error("Invalid cookie");
+		
+		removeRefreshCookie(ctx)
+
+		return await ctx.prisma.user.findFirst({
+			where: {
+				id: refreshCookie.userId,
+			},
+			rejectOnNotFound: true
+		})
 	},
 });

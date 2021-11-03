@@ -46,6 +46,7 @@ type Mutation {
   createBoard(input: CreateBoardInput!): Board
   createBoardItem(input: CreateBoardItemInput!, where: BoardWhereUniqueInput!): Item
   login(input: LoginInput!): AuthPayload!
+  logout: User!
   refreshAuth: AuthPayload!
   removeBoardItem(where: ItemWhereUniqueInput!): Item
   signup(input: SignupInput!): AuthPayload!

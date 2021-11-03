@@ -73,3 +73,16 @@ export function getUserId({ request, connection }: GetUserIdContext) {
 		return verifiedToken && verifiedToken.userId;
 	}
 }
+
+export function getRefreshCookie({
+	request,
+}: Pick<GetUserIdContext, "request">) {
+	const refreshToken = request.cookies["refresh"];
+	if (refreshToken) {
+		const jwtContent = verify(
+			refreshToken,
+			constants.JWT_REFRESH_SECRET
+		) as JwtPayload;
+		return jwtContent;
+	}
+}
