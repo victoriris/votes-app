@@ -5,7 +5,7 @@ import ms from "ms";
 import constants from "../constants";
 import { Context } from "../context";
 
-type JwtPayload = {
+export type JwtPayload = {
 	userId: string;
 };
 
@@ -45,7 +45,7 @@ export const removeRefreshCookie = (context: any) => {
 	context.response.cookie("refresh", "", { expires: new Date() });
 };
 
-export const getTokens = async (payload: JwtPayload, context?: Context) => {
+export const createTokens = async (payload: JwtPayload, context?: Context) => {
 	const accessToken = createAccessToken(payload);
 	const refreshToken = createRefreshToken(payload);
 

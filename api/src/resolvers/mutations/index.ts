@@ -1,5 +1,6 @@
 import { UserInputError } from "apollo-server-errors";
 import bcrypt from "bcryptjs";
+import { verify } from "jsonwebtoken";
 import { mutationField, nonNull, nullable } from "nexus";
 import {
 	Board,
@@ -12,7 +13,8 @@ import {
 	SignupInput,
 	Vote,
 } from "..";
-import { getTokens } from "../../utils/auth";
+import constants from "../../constants";
+import { createTokens, JwtPayload } from "../../utils/auth";
 import { AuthPayload } from "../payloads";
 
 export const createBoard = mutationField("createBoard", {
@@ -97,7 +99,7 @@ export const signup = mutationField("signup", {
 			},
 		});
 
-		const { accessToken } = await getTokens({ userId: user.id }, ctx);
+		const { accessToken } = await createTokens({ userId: user.id }, ctx);
 
 		return {
 			user,
@@ -124,10 +126,40 @@ export const login = mutationField("login", {
 			throw new UserInputError("Invalid credentials");
 		}
 
-		const { accessToken } = await getTokens({ userId: user.id }, ctx);
+		const { accessToken } = await createTokens({ userId: user.id }, ctx);
 
 		return {
 			user,
+			accessToken,
+		};
+	},
+});
+
+export const refreshAuth = mutationField("refreshAuth", {
+	type: nonNull(AuthPayload),
+	resolve: async (_root, _args, ctx) => {
+		const refreshToken = ctx.request.cookies["refresh"];
+		if (!refreshToken) throw new Error("Invalid cookie");
+
+		const jwtContent = verify(
+			refreshToken,
+			constants.JWT_REFRESH_SECRET
+		) as JwtPayload;
+
+		const user = await ctx.prisma.user.findFirst({
+			where: {
+				id: jwtContent.userId
+			},
+		})
+		if (!user) throw new UserInputError("Invalid user");
+
+		const { accessToken } = await createTokens(
+			{ userId: user.id },
+			ctx
+		);
+
+		return {
+			user: user,
 			accessToken,
 		};
 	},
