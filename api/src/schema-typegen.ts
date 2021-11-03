@@ -106,6 +106,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createBoard: NexusGenRootTypes['Board'] | null; // Board
     createBoardItem: NexusGenRootTypes['Item'] | null; // Item
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     removeBoardItem: NexusGenRootTypes['Item'] | null; // Item
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     voteItem: NexusGenRootTypes['Vote'] | null; // Vote
@@ -146,6 +147,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createBoard: 'Board'
     createBoardItem: 'Item'
+    login: 'AuthPayload'
     removeBoardItem: 'Item'
     signup: 'AuthPayload'
     voteItem: 'Vote'
@@ -175,6 +177,9 @@ export interface NexusGenArgTypes {
     createBoardItem: { // args
       input: NexusGenInputs['CreateBoardItemInput']; // CreateBoardItemInput!
       where: NexusGenInputs['BoardWhereUniqueInput']; // BoardWhereUniqueInput!
+    }
+    login: { // args
+      input: NexusGenInputs['LoginInput']; // LoginInput!
     }
     removeBoardItem: { // args
       where: NexusGenInputs['ItemWhereUniqueInput']; // ItemWhereUniqueInput!

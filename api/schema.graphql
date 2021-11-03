@@ -45,6 +45,7 @@ input LoginInput {
 type Mutation {
   createBoard(input: CreateBoardInput!): Board
   createBoardItem(input: CreateBoardItemInput!, where: BoardWhereUniqueInput!): Item
+  login(input: LoginInput!): AuthPayload!
   removeBoardItem(where: ItemWhereUniqueInput!): Item
   signup(input: SignupInput!): AuthPayload!
   voteItem(where: ItemWhereUniqueInput!): Vote
