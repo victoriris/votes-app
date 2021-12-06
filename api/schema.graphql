@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  accessToken: String!
+  user: User!
+}
+
 type Board {
   description: String!
   id: ID!
@@ -32,16 +37,32 @@ input ItemWhereUniqueInput {
   id: ID!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createBoard(input: CreateBoardInput!): Board
   createBoardItem(input: CreateBoardItemInput!, where: BoardWhereUniqueInput!): Item
+  login(input: LoginInput!): AuthPayload!
+  logout: User!
+  refreshAuth: AuthPayload!
   removeBoardItem(where: ItemWhereUniqueInput!): Item
+  signup(input: SignupInput!): AuthPayload!
   voteItem(where: ItemWhereUniqueInput!): Vote
 }
 
 type Query {
   board(where: BoardWhereUniqueInput!): Board
   boards: [Board!]!
+}
+
+input SignupInput {
+  email: String!
+  firstname: String!
+  lastname: String!
+  password: String!
 }
 
 type User {
